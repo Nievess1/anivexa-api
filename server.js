@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import worker from "./index.js";
+import { handleDownloadRequest } from "./download.js";
 
 const PORT  = Number(process.env.PORT) || 4000;
 const BASE  = process.env.BASE_PATH ?? "";
@@ -58,6 +59,10 @@ const server = http.createServer(async (req, res) => {
   }
 
   try {
+    if (await handleDownloadRequest(req, res, { worker, port: PORT })) {
+      return;
+    }
+
     const request  = await nodeToRequest(req);
     const response = await worker.fetch(request, {});
 

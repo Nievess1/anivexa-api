@@ -66,6 +66,15 @@ GET /watch/:provider/:anilistId/sub|dub/:provider-:ep
 Returns stream URLs for a specific episode from a specific provider.
 
 ```
+GET /download/:provider/:anilistId/sub|dub/:provider-:ep?source=0
+```
+The Node/Railway server resolves the requested episode source and converts
+the selected direct HLS/MP4/WebM source into a progressive MP4 download.
+`source` is the zero-based direct-video quality index returned to the client.
+Embed-only servers cannot be downloaded. This route requires `ffmpeg`; the
+included `nixpacks.toml` installs it on Railway.
+
+```
 GET /stream/reanime/:id/sub|dub/:ep
 ```
 302 redirect directly to the HLS stream.
